@@ -128,13 +128,34 @@ void delayedTest1() async {
 }
 
 // prints 1000+
+// The code will wait for all futures (f1, f2, f3) to complete before moving to the 
+// print statement. Since Future.wait waits for all passed futures to complete, the 
+// print statement will be executed after the longest future (f3) has completed, 
+// which is after 3 seconds.
+
+// What to do:
+// Use descriptive and verbose variable names that clearly indicate the purpose of each local variable.
+// Document the reason for waiting for all three events to finish within the function.
+// Choose a function name that accurately reflects its functionality and avoid ambiguity.
+
+// Following comments should have been there
+// Insert into line 157, to describe the purpose of wait
+// Wait for all delayed events to complete. This is necessary to synchronize actions that
+// may depend on the completion of multiple independent asynchronous tasks.
+// Right above the function 
+// This function demonstrates how to use Future.wait to simultaneously await multiple delayed events.
+// It measures the total time taken for the longest event to complete using a Stopwatch.
 void delayedTest2() async {
   Stopwatch watch3 = Stopwatch();
+
+  print("Unified wait for 3 futures");
   
   watch3.start();
-  
+  print("Future 1 ${watch3.elapsedMilliseconds} ");
   var f1 = Future.delayed(Duration(seconds:1));
+  print("Future 2 ${watch3.elapsedMilliseconds} ");
   var f2 = Future.delayed(Duration(seconds:2));
+  print("Future 3 ${watch3.elapsedMilliseconds} ");
   var f3 = Future.delayed(Duration(seconds:3));
 
   await Future.wait([f1, f2, f3]);
@@ -142,7 +163,7 @@ void delayedTest2() async {
   print("Unified wait for async functions ${watch3.elapsedMilliseconds}");  
 }
 
-
+//Server simulation
 Future<int?> getImage(String server) async {
   var rng = Random();
   
@@ -159,6 +180,7 @@ Future<int?> getImage(String server) async {
 }
 
 // prints 1000+
+// simulate downloading images from a server 
 void getImageSimulatorTest() async {
   
   Stopwatch watch = Stopwatch();
