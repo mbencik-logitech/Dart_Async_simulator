@@ -15,7 +15,8 @@ void main() async {
   print(result); // Prints "second" after 7 seconds.
 
   try {
-    await waitTask("completed 3").timeout(const Duration(seconds: 2));
+    result = await waitTask("completed 3").timeout(const Duration(seconds: 2));
+    print(result);
   } on TimeoutException {
     print("throws waitTask"); // Prints "throws" after 2 seconds.
   }
@@ -91,6 +92,7 @@ void delayedTest() async {
   //watch.stop(); // Optional: stop the stopwatch if it's no longer needed
 }
 
+//https://stackoverflow.com/questions/75175210/what-exactly-await-does-internally-in-dart
 // prints 1000+
 Future<void> delayedTestFuture() async {
   print("Delayed test with awaits, await entire function");
@@ -150,11 +152,12 @@ void delayedTest2() async {
 
   print("Unified wait for 3 futures");
   
+  // a change of times in this function can influence the server 4 in the getImageSimulatorTest function 
   watch3.start();
   print("Future 1 ${watch3.elapsedMilliseconds} ");
   var f1 = Future.delayed(Duration(seconds:1));
   print("Future 2 ${watch3.elapsedMilliseconds} ");
-  var f2 = Future.delayed(Duration(seconds:2));
+  var f2 = Future.delayed(Duration(seconds:7));
   print("Future 3 ${watch3.elapsedMilliseconds} ");
   var f3 = Future.delayed(Duration(seconds:3));
 
@@ -196,6 +199,7 @@ void getImageSimulatorTest() async {
      return data ?? await getImage("Server 2 backup");
   });
 
+  // the lambda function Server backup gets executed here, after the get image was executed
   var f4=Future.wait([f1, f2]).then((data) async {
     if (data[0]==null || data[1]==null) {
        return [await getImage("Server 4")];
